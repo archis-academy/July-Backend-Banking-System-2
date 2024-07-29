@@ -20,6 +20,10 @@ public class UserService {
         accountNumbers.add(newUser);
     }
 
+    public void addUserManually(User user){
+        accountNumbers.add(user);
+    }
+
     public List<User> getUsers(){
         return accountNumbers;
     }
