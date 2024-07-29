@@ -10,10 +10,18 @@ public class UserService {
         this.accountNumbers = new ArrayList<>();
     }
 
-    public void createNewUser(String name) {
+    public int generateUniqueAccountNumber(){
+        return accountNumbers.size() + 1;
+    }
+
+    public void createNewUser(String name, String idNumber) {
         int newAccountNumber = generateUniqueAccountNumber();
-        User newUser = new User(name, newAccountNumber);
+        User newUser = new User(name,idNumber, newAccountNumber);
         accountNumbers.add(newUser);
+    }
+
+    public List<User> getUsers(){
+        return accountNumbers;
     }
 
 }
