@@ -1,33 +1,18 @@
 package org.example.account;
 
+import org.example.user.User;
+
 public class Account {
-    public String user;
+    public User user;
     public double balance;
+    public int accountNumber;
 
     public Account(){}
 
-    public Account(String user, double balance){
-        setUser(user);
-        setBalance(balance);
-    }
-
-    public void setUser(String user){
+    public Account(User user,int accountNumber ,double balance){
         this.user = user;
-    }
-    public void setBalance(double balance){
+        this.accountNumber = accountNumber;
         this.balance = balance;
-    }
-    public String getUser(){
-        return this.user;
-    }
-    public double getBalance(){
-        System.out.println("Balance: " + balance);
-        return this.balance;
-    }
-
-    public void depositMoney(double amount){
-        balance += amount;
-        System.out.println("$" + amount + " is deposited to your account.");
     }
 
 }
