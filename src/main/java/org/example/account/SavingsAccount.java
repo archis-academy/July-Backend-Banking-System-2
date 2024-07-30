@@ -1,5 +1,7 @@
 package org.example.account;
 
+import org.example.user.User;
+
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -11,8 +13,8 @@ public class SavingsAccount extends Account {
     public DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
     public DateTimeFormatter formattedDateDMY = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public SavingsAccount(String user, double balance, double interestRate) {
-        super(user, balance);
+    public SavingsAccount(User user, int accountNumber, double balance, double interestRate) {
+        super(user, accountNumber ,balance);
         this.interestRate = interestRate;
         this.withdrawals = 0;
     }
