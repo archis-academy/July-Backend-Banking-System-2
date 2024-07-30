@@ -13,18 +13,6 @@ public class AccountHistory {
         this.balancePostTransaction = balancePostTransaction;
     }
 
-    public String getTransactionType(){
-        return this.transactionType;
-    }
-
-    public double getAmount(){
-        return this.amount;
-    }
-
-    public double getBalancePostTransaction(){
-        return this.balancePostTransaction;
-    }
-
     public String toString(){
         return "Transaction Type: " + transactionType + "Amount: $" + amount + ", Balance After Transaction: $" + balancePostTransaction;
     }
