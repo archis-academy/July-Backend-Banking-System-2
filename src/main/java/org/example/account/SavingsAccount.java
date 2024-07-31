@@ -13,7 +13,7 @@ public class SavingsAccount extends Account {
     public DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
     public DateTimeFormatter formattedDateDMY = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public SavingsAccount(User user, int accountNumber, double balance, double interestRate) {
+    public SavingsAccount(User user, String accountNumber, double balance, double interestRate) {
         super(user, accountNumber ,balance);
         this.interestRate = interestRate;
         this.withdrawals = 0;
