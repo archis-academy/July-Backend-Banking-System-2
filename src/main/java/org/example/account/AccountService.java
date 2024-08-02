@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AccountService {
-    public Map<String, Account> accounts = new HashMap<>();
+    public List<Account> accounts= new Arraylist<>();
     
     public void checkBalance(String accountNumber) {
         Account account = getAccount(accountNumber);
