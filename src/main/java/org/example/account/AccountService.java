@@ -3,20 +3,25 @@ package org.example.account;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.example.user.User;
+
 public class AccountService {
     public Map<String, Account> accounts = new HashMap<>();
+    User user = new User();
     
-    public void checkBalance(String accountNumber) {
-        Account account = getAccount(accountNumber);
-        if (account != null) {
-            System.out.println("Account balance for account number " + accountNumber + ": $" + account.getBalance());
-        } else {
-            System.out.println("Account not found.");
+    public void listAllAccounts() {
+        if (accounts.isEmpty()) {
+            System.out.println("No accounts available.");
+            return;
         }
-    }
 
-    public Account getAccount(String accountNumber) {
-        return accounts.get(accountNumber);
+        System.out.println("Accounts:");
+        for (Account account : accounts.values()) {
+            System.out.println("Account Number: " + account.getAccountNumber() + 
+                                ", Name: "+ user.getUserName() +
+                                ", User ID: " + user.idNumber() +
+                               ", Balance: " + account.getBalance());
+        }
     }
 
 }
