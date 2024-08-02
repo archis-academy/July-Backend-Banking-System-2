@@ -7,21 +7,24 @@ import org.example.user.User;
 
 public class AccountService {
     public Map<String, Account> accounts = new HashMap<>();
-    User user = new User();
     
-    public void listAllAccounts() {
-        if (accounts.isEmpty()) {
-            System.out.println("No accounts available.");
-            return;
+    public void deleteAccount(String accountNumber) {
+      
+        int indexToRemove = -1;
+        for (int i = 0; i < accounts.size(); i++) {
+            if (accounts.get(i).getAccountNumber().equals(accountNumber)) {
+                indexToRemove = i;
+                break;
+            }
         }
-
-        System.out.println("Accounts:");
-        for (Account account : accounts.values()) {
-            System.out.println("Account Number: " + account.getAccountNumber() + 
-                                ", Name: "+ user.getUserName() +
-                                ", User ID: " + user.idNumber() +
-                               ", Balance: " + account.getBalance());
+        
+        if (indexToRemove != -1) {
+            accounts.remove(indexToRemove);
+            System.out.println("Account " + accountNumber + " has been deleted.");
+        } else {
+            System.out.println("Account not found.");
         }
     }
+
 
 }
