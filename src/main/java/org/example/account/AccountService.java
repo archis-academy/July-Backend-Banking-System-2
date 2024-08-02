@@ -6,7 +6,7 @@ import java.util.Map;
 import org.example.user.User;
 
 public class AccountService {
-    public Map<String, Account> accounts = new HashMap<>();
+    public List<Account> accounts = new ArrayList<>();
     User user = new User();
     
     public void listAllAccounts() {
