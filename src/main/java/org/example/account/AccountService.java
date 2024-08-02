@@ -9,7 +9,7 @@ public class AccountService {
     public void checkBalance(String accountNumber) {
         Account account = getAccount(accountNumber);
         if (account != null) {
-            System.out.println("Account balance for account number " + accountNumber + ": $" + account.getBalance());
+            System.out.println("Account balance for account number " + accountNumber + ":" + account.getBalance());
         } else {
             System.out.println("Account not found.");
         }
