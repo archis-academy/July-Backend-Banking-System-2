@@ -1,37 +1,35 @@
 package org.example.account;
 
-import org.example.user.User;
-import org.example.user.UserService;
-
 public class AccountService {
+  
+    public AccountService() {
+    }
 
     public void depositMoney(Account account, double amount) {
         if (amount > 0) {
             account.balance += amount;
             System.out.println("$" + amount + " is deposited to your account.");
-            account.accountHistories.add(new AccountHistory("Deposit, ", amount, account.balance));
-        } else {
-            System.out.println("Invalid funds to deposit!");
+        }
+        else{
+            System.out.println("Invalid amount of deposit!");
         }
     }
-
-    public void withDraw(Account account,double amount) {
+    public void withDraw(Account account, double amount) {
         if (account.balance >= amount) {
             account.balance -= amount;
             System.out.println("$" + amount + " is withdrawn from your account.");
-            account.accountHistories.add(new AccountHistory("Withdraw, ", amount, account.balance));
         } else {
-            System.out.println("Insufficient funds to withdraw!");
+            System.out.println("Insufficient funds!");
         }
     }
 
     public void getTransactionHistory(Account account) {
-        System.out.println("Transaction History for " + account.user.name);
+        System.out.println("Transaction History for " + account.user);
         for (AccountHistory history : account.accountHistories) {
             System.out.println(history);
         }
     }
-
+  
     public void transferMoney(Account accountSender, Account accountTaker, double amount, UserService userService) {
         boolean senderRegistered = false;
         boolean takerRegistered = false;
@@ -63,5 +61,6 @@ public class AccountService {
             System.out.println(accountTaker.user.name + " is not registered on the system");
         }
     }
+  
+  
 }
-

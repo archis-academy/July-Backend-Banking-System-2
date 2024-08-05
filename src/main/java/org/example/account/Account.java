@@ -7,17 +7,18 @@ import java.util.List;
 
 public class Account {
     public User user;
-    public String idNumber;
+    public String accountNumber;
     public double balance;
 
     public List<AccountHistory> accountHistories;
 
     public Account(){}
 
-    public Account(User user,String idNumber, double balance){
+    public Account(User user,String accountNumber, double balance){
         this.user = user;
-        this.idNumber = idNumber;
+        this.accountNumber = accountNumber;
         this.balance = balance;
         this.accountHistories = new ArrayList<>();
     }
+
 }
