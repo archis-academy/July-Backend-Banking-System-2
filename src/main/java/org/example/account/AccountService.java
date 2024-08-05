@@ -1,5 +1,8 @@
 package org.example.account;
 
+import org.example.user.User;
+import org.example.user.UserService;
+
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 
@@ -10,7 +13,7 @@ public class AccountService {
     public void depositMoney(Account account, double amount){
         if(amount > 0){
             account.balance += amount;
-        System.out.println("$" + amount + " is deposited to your account.");
+            System.out.println("$" + amount + " is deposited to your account.");
         }
         else{
             System.out.println("Invalid fund to deposit!");
@@ -24,6 +27,44 @@ public class AccountService {
         }
         else{
             System.out.println("Insufficient funds!");
+        }
+    }
+    public void getTransactionHistory(Account account) {
+        System.out.println("Transaction History for " + account.user);
+        for (AccountHistory history : account.accountHistories) {
+            System.out.println(history);
+        }
+    }
+
+    public void transferMoney(Account accountSender, Account accountTaker, double amount, UserService userService) {
+        boolean senderRegistered = false;
+        boolean takerRegistered = false;
+
+        for (User user : userService.getUsers()) {
+            if (user.idNumber.equals(accountSender.user.idNumber)) {
+                senderRegistered = true;
+            }
+            if (user.idNumber.equals(accountTaker.user.idNumber)) {
+                takerRegistered = true;
+            }
+        }
+
+        if (senderRegistered && takerRegistered) {
+            if (accountSender.balance > amount) {
+                accountSender.balance -= amount;
+                accountTaker.balance += amount;
+
+                accountSender.accountHistories.add(new AccountHistory("Transfer, ", amount, accountSender.balance));
+                accountTaker.accountHistories.add(new AccountHistory("Deposit, ", amount, accountTaker.balance));
+
+                System.out.println(accountTaker.user.name + ", you have been transferred $" + amount + " from " + accountSender.user.name);
+            } else {
+                System.out.println("Insufficient balance to transfer!");
+            }
+        } else if (!senderRegistered) {
+            System.out.println(accountSender.user.name + " is not registered on the system");
+        } else if (!takerRegistered) {
+            System.out.println(accountTaker.user.name + " is not registered on the system");
         }
     }
 
@@ -59,5 +100,5 @@ public class AccountService {
         savingsAccount.balance += savingsAccount.balance * savingsAccount.interestRate;
         System.out.println("Balance after addition of interest: $" + savingsAccount.balance);
     }
-  
+
 }
