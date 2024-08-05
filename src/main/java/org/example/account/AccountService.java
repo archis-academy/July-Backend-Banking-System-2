@@ -2,7 +2,7 @@
 package org.example.account;
 
 public class AccountService {
-
+  
     public AccountService() {
     }
 
@@ -15,5 +15,6 @@ public class AccountService {
             System.out.println("Invalid amount of deposit!");
         }
     }
+
 
 }
