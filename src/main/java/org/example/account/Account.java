@@ -14,7 +14,6 @@ public class Account {
 
     public Account(){}
 
-
     public Account(User user,String accountNumber, double balance){
         this.user = user;
         this.accountNumber = accountNumber;
