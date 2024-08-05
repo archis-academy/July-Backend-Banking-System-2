@@ -1,5 +1,8 @@
 package org.example.account;
 
+import org.example.user.User;
+import org.example.user.UserService;
+
 public class AccountService {
   
     public AccountService() {
@@ -35,10 +38,10 @@ public class AccountService {
         boolean takerRegistered = false;
 
         for (User user : userService.getUsers()) {
-            if (user.idNumber.equals(accountSender.idNumber)) {
+            if (user.idNumber.equals(accountSender.user.idNumber)) {
                 senderRegistered = true;
             }
-            if (user.idNumber.equals(accountTaker.idNumber)) {
+            if (user.idNumber.equals(accountTaker.user.idNumber)) {
                 takerRegistered = true;
             }
         }
@@ -61,6 +64,5 @@ public class AccountService {
             System.out.println(accountTaker.user.name + " is not registered on the system");
         }
     }
-  
-  
+
 }
