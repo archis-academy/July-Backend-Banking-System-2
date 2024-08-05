@@ -1,10 +1,7 @@
 package org.example.user;
 
-import org.example.account.Account;
 
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDateTime;
-import java.util.Date;
 
 public class User {
     public String name;
