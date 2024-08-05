@@ -1,12 +1,20 @@
 package org.example.account;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.example.user.User;
 import org.example.user.UserService;
 
 public class AccountService {
+
   
     public AccountService() {
     }
+
+    
+    public List<Account> accounts = new ArrayList<>();
+    public List<Account> updatedAccounts = new ArrayList<>();
 
     public void depositMoney(Account account, double amount) {
         if (amount > 0) {
@@ -64,6 +72,33 @@ public class AccountService {
             System.out.println(accountTaker.user.name + " is not registered on the system");
         }
     }
-  
-  
+
+
+    
+    public boolean deleteAccount(String accountNumber) {
+        boolean found = false;
+        
+        
+        for (Account account : accounts) {
+            if (account.accountNumber.equals(accountNumber)) {
+                found = true; 
+            } else {
+                updatedAccounts.add(account); 
+            }
+        }
+        
+        accounts = updatedAccounts;
+        
+        if (found) {
+            System.out.println("Account " + accountNumber + " has been deleted.");
+            return true; 
+        } else {
+            System.out.println("Account not found.");
+            return false; 
+        }
+    }
+
 }
+
+  
+  
