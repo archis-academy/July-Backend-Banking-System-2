@@ -76,48 +76,21 @@ public class AccountService {
     }
     public boolean comfirmDeleting(String accountNumber){
 
-        System.out.println("Are you sure you want to delete account " + accountNumber + "? (yes/no)");
+        System.out.print("Are you sure you want to delete account " + accountNumber + "? (yes/no): ");
         String confirmation = scanner.nextLine().trim().toLowerCase();
 
-        if (!confirmation.equals("no")) {
+        if (confirmation.equals("no")) {
             System.out.println("Account deletion cancelled.");
             return false;
         }
 
         updatedAccounts.clear();
+        return true;
       
     }
 
 
 
     
-    public boolean deleteAccount(String accountNumber) {
-
-        comfirmDeleting(accountNumber);
-
-        boolean found = false;
-        
-        
-        for (Account account : accounts) {
-            if (account.accountNumber.equals(accountNumber)) {
-                found = true; 
-            } else {
-                updatedAccounts.add(account); 
-            }
-        }
-        
-        accounts = updatedAccounts;
-        
-        if (found) {
-            System.out.println("Account " + accountNumber + " has been deleted.");
-            return true; 
-        } else {
-            System.out.println("Account not found.");
-            return false; 
-        }
-    }
-
 }
-
-  
   
