@@ -5,8 +5,6 @@ public class User {
     public String idNumber;
     public int accountNumber;
 
-
-
     public User(){}
 
     public User(String name,String idNumber, int accountNumber) {
