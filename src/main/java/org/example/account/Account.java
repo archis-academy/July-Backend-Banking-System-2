@@ -1,6 +1,8 @@
 package org.example.account;
 import org.example.user.User;
 
+import org.example.user.User;
+
 public class Account {
     public User user;
     public String accountNumber;
@@ -8,9 +10,9 @@ public class Account {
 
     public Account(){}
 
-    public Account(User user, String accountNumber,double balance){
+    public Account(User user,String accountNumber, double balance){
         this.user = user;
-        this.balance = balance;
         this.accountNumber = accountNumber;
+        this.balance = balance;
     }
 }

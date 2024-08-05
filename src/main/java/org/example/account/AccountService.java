@@ -7,6 +7,26 @@ public class AccountService {
     public SavingsAccount savingsAccount = new SavingsAccount();
     public CheckingsAccount checkingsAccount = new CheckingsAccount();
 
+    public void depositMoney(Account account, double amount){
+        if(amount > 0){
+            account.balance += amount;
+        System.out.println("$" + amount + " is deposited to your account.");
+        }
+        else{
+            System.out.println("Invalid fund to deposit!");
+        }
+    }
+
+    public void withDraw(Account account ,double amount){
+        if(account.balance >= amount){
+            account.balance -= amount;
+            System.out.println("$" + amount + " is withdrawn from your account.");
+        }
+        else{
+            System.out.println("Insufficient funds!");
+        }
+    }
+  
     public void withDraw(Account account ,double amount){
         if(account.balance >= amount){
             account.balance -= amount;
@@ -49,4 +69,5 @@ public class AccountService {
         savingsAccount.balance += savingsAccount.balance * savingsAccount.interestRate;
         System.out.println("Balance after addition of interest: $" + savingsAccount.balance);
     }
+  
 }
