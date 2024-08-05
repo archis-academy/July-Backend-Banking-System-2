@@ -10,25 +10,24 @@ public class AccountService {
     public SavingsAccount savingsAccount = new SavingsAccount();
     public CheckingsAccount checkingsAccount = new CheckingsAccount();
 
-    public void depositMoney(Account account, double amount){
-        if(amount > 0){
+    public void depositMoney(Account account, double amount) {
+        if (amount > 0) {
             account.balance += amount;
             System.out.println("$" + amount + " is deposited to your account.");
-        }
-        else{
+        } else {
             System.out.println("Invalid fund to deposit!");
         }
     }
 
-    public void withDraw(Account account ,double amount){
-        if(account.balance >= amount){
+    public void withDraw(Account account, double amount) {
+        if (account.balance >= amount) {
             account.balance -= amount;
             System.out.println("$" + amount + " is withdrawn from your account.");
-        }
-        else{
+        } else {
             System.out.println("Insufficient funds!");
         }
     }
+
     public void getTransactionHistory(Account account) {
         System.out.println("Transaction History for " + account.user);
         for (AccountHistory history : account.accountHistories) {
@@ -68,7 +67,7 @@ public class AccountService {
         }
     }
 
-    public void writeCheckForCheckings(CheckingsAccount checkingsAccount,double amount) {
+    public void writeCheckForCheckings(CheckingsAccount checkingsAccount, double amount) {
         withDraw(checkingsAccount, amount);
         System.out.println("Check written for $" + amount + " is withdrawn from account.");
         System.out.println(checkingsAccount.balance);
