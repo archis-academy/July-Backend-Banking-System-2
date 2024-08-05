@@ -1,31 +1,27 @@
 package org.example.user;
+import org.example.account.Account;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UserService {
-    private List<User> accountNumbers;
+    private int userID = 1;
+    private List<User> accounts;
 
     public UserService() {
-        this.accountNumbers = new ArrayList<>();
+        this.accounts = new ArrayList<>();
     }
 
-    public int generateUniqueAccountNumber(){
-        return accountNumbers.size() + 1;
-    }
-
-    public void createNewUser(String name, String idNumber) {
-        int newAccountNumber = generateUniqueAccountNumber();
-        User newUser = new User(name,idNumber, newAccountNumber);
-        accountNumbers.add(newUser);
-    }
-
-    public void addUserManually(User user){
-        accountNumbers.add(user);
+    public void createNewUser(String name, String idNumber, LocalDateTime currentDate, int cvv) {
+        int newAccountNumber = userID;
+        User newUser = new User(name,idNumber, newAccountNumber, currentDate, cvv);
+        accounts.add(newUser);
     }
 
     public List<User> getUsers(){
-        return accountNumbers;
+        return accounts;
     }
 
 }
