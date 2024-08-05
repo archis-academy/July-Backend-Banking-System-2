@@ -3,8 +3,15 @@ package org.example.account;
 import org.example.user.User;
 import org.example.user.UserService;
 
+import java.time.LocalDateTime;
+import java.time.MonthDay;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 public class AccountService {
-  
+    private LocalDateTime currentDate = LocalDateTime.now();
+    private DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
     public AccountService() {
     }
 
@@ -12,11 +19,11 @@ public class AccountService {
         if (amount > 0) {
             account.balance += amount;
             System.out.println("$" + amount + " is deposited to your account.");
-        }
-        else{
+        } else {
             System.out.println("Invalid amount of deposit!");
         }
     }
+
     public void withDraw(Account account, double amount) {
         if (account.balance >= amount) {
             account.balance -= amount;
@@ -32,7 +39,7 @@ public class AccountService {
             System.out.println(history);
         }
     }
-  
+
     public void transferMoney(Account accountSender, Account accountTaker, double amount, UserService userService) {
         boolean senderRegistered = false;
         boolean takerRegistered = false;
@@ -64,6 +71,39 @@ public class AccountService {
             System.out.println(accountTaker.user.name + " is not registered on the system");
         }
     }
-  
-  
+
+    public void calculateInterest(Account account, double interestRate) {
+        if (interestRate < 0) {
+            System.out.println("Interest rate should be more than 0");
+            return;
+        }
+        if (account == null) {
+            System.out.println("This account is not actively registered on the system.");
+            return;
+        }
+        if (account.balance < 0) {
+            System.out.println("Balance should be more than 0 for interest gaining operation.");
+            return;
+        }
+
+        LocalDateTime dayRequested = LocalDateTime.now();
+        LocalDateTime oneMonthLater = dayRequested.plusDays(30);
+        long daysTillConfirm = ChronoUnit.DAYS.between(dayRequested, oneMonthLater);
+
+        if (oneMonthLater.isAfter(currentDate)) {
+            double profitAmount = account.balance * interestRate;
+
+            account.balance += profitAmount;
+
+
+            if (currentDate.equals(oneMonthLater)) {
+                System.out.println("Payment is succesfully done.");
+                System.out.println("Balance after Profit: $" + account.balance);
+            } else {
+                System.out.printf("Your payment is requested on %s and will be actively posted on the system after %s days", dayRequested.format(formattedDate), daysTillConfirm);
+                System.out.println("$" + profitAmount + " will be added to your account after completion of successfully interest operation on this date - " + oneMonthLater.format(formattedDate));
+            }
+
+        }
+    }
 }
