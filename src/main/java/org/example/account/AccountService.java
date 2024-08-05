@@ -2,6 +2,7 @@ package org.example.account;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.example.user.User;
 import org.example.user.UserService;
@@ -15,6 +16,7 @@ public class AccountService {
     
     public List<Account> accounts = new ArrayList<>();
     public List<Account> updatedAccounts = new ArrayList<>();
+    Scanner scanner = new Scanner(System.in);
 
     public void depositMoney(Account account, double amount) {
         if (amount > 0) {
@@ -72,10 +74,27 @@ public class AccountService {
             System.out.println(accountTaker.user.name + " is not registered on the system");
         }
     }
+    public boolean comfirmDeleting(String accountNumber){
+
+        System.out.println("Are you sure you want to delete account " + accountNumber + "? (yes/no)");
+        String confirmation = scanner.nextLine().trim().toLowerCase();
+
+        if (!confirmation.equals("no")) {
+            System.out.println("Account deletion cancelled.");
+            return false;
+        }
+
+        updatedAccounts.clear();
+      
+    }
+
 
 
     
     public boolean deleteAccount(String accountNumber) {
+
+        comfirmDeleting(accountNumber);
+
         boolean found = false;
         
         
