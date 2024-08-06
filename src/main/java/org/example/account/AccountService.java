@@ -33,7 +33,7 @@ public class AccountService {
     }
 
     public void getTransactionHistory(Account account) {
-        System.out.println("Transaction History for " + account.user);
+        System.out.println("\nTransaction History for " + account.user.name);
         for (AccountHistory history : account.accountHistories) {
             System.out.println(history);
         }
@@ -93,15 +93,14 @@ public class AccountService {
         double monthlyPayment = totalAmountDueInterest / termInMonth;
 
         account.balance += loanAmount;
+        account.accountHistories.add(new AccountHistory("Loan, ", loanAmount, account.balance));
 
         LocalDateTime oneMonthLater = currentDate.plusDays(30);
         long daysTillNextPayment = ChronoUnit.DAYS.between(currentDate, oneMonthLater);
 
         System.out.printf("You have loaned $%.2f and total amount based on interest that you will pay back is $%.2f", loanAmount, totalAmountDueInterest);
-        System.out.printf("\nYou are calculated to pay the amount back in %d months and your monthly payment will be equal to $%.2f", termInMonth, monthlyPayment);
-        System.out.printf("\nNext payment is awaiting to be paid after %d days, on this date - %s", daysTillNextPayment, oneMonthLater.format(formattedDate));
-
         System.out.println("\nYour balance after loan amount added: $" + account.balance);
-
+        System.out.printf("\nYou are calculated to pay the amount back in %d months and your monthly payment will be equal to $%.2f", termInMonth, monthlyPayment);
+        System.out.printf("\nNext payment is awaiting to be paid after %d days, on this date - %s\n", daysTillNextPayment, oneMonthLater.format(formattedDate));
     }
 }
