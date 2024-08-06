@@ -1,6 +1,5 @@
 package org.example.user;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +11,9 @@ public class UserService {
         this.accounts = new ArrayList<>();
     }
 
-    public void createNewUser(String name, String idNumber, LocalDateTime currentDate, int cvv) {
+    public void createNewUser(String name, String idNumber) {
         int newAccountNumber = userID;
-        User newUser = new User(name,idNumber, newAccountNumber, currentDate, cvv);
+        User newUser = new User(name,idNumber, newAccountNumber);
         userID++;
         accounts.add(newUser);
     }
