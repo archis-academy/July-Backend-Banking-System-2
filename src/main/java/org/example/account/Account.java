@@ -1,4 +1,5 @@
 package org.example.account;
+import org.example.user.User;
 
 import org.example.user.User;
 
@@ -27,5 +28,4 @@ public class Account {
         this.cvv = cvv;
         this.accountHistories = new ArrayList<>();
     }
-
 }
