@@ -4,13 +4,13 @@ import org.example.user.User;
 import org.example.user.UserService;
 
 import java.time.LocalDateTime;
-import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class AccountService {
     private LocalDateTime currentDate = LocalDateTime.now();
     private DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private double interestRate = 0.25;
 
     public AccountService() {
     }
@@ -72,7 +72,7 @@ public class AccountService {
         }
     }
 
-    public void calculateInterest(Account account, double interestRate) {
+    public void calculateInterest(Account account) {
         if (interestRate < 0) {
             System.out.println("Interest rate should be more than 0");
             return;
