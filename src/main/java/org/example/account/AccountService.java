@@ -1,27 +1,39 @@
 package org.example.account;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.example.user.User;
 
 public class AccountService {
     public List<Account> accounts = new ArrayList<>();
-    User user = new User();
     
-    public void listAllAccounts() {
+    public List<String> listAllAccounts() {
+        List<String> accountDetails = new ArrayList<>();
+
         if (accounts.isEmpty()) {
-            System.out.println("No accounts available.");
-            return;
+            accountDetails.add("There are no accounts available.");
+            return accountDetails;
         }
 
-        System.out.println("Accounts:");
-        for (Account account : accounts.values()) {
-            System.out.println("Account Number: " + account.getAccountNumber() + 
-                                ", Name: "+ user.getUserName() +
-                                ", User ID: " + user.idNumber() +
-                               ", Balance: " + account.getBalance());
+        System.out.println("All Accounts and Details:");
+        for (Account account : accounts) {
+            accountDetails.add(account.toString());
+            accountDetails.add("Transaction History:");
+            if (account.accountHistories.isEmpty()) {
+                accountDetails.add("There is no transaction history.");
+            } else {
+                for (String history : account.accountHistories) {
+                    accountDetails.add("  " + history);
+                }
         }
+        accountDetails.add("");
     }
 
+        return accountDetails;
+    
+    }
 }
+
