@@ -1,4 +1,5 @@
 package org.example.account;
+import org.example.user.User;
 
 import org.example.user.User;
 
@@ -20,5 +21,4 @@ public class Account {
         this.balance = balance;
         this.accountHistories = new ArrayList<>();
     }
-
 }
