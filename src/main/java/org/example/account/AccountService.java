@@ -3,7 +3,13 @@ package org.example.account;
 import org.example.user.User;
 import org.example.user.UserService;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 public class AccountService {
+    private LocalDateTime currentDate = LocalDateTime.now();
+    private DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
   
     public AccountService() {
     }
@@ -64,6 +70,38 @@ public class AccountService {
             System.out.println(accountTaker.user.name + " is not registered on the system");
         }
     }
-  
-  
+
+    public void manageLoan(Account account, double loanAmount, double interestRate, int termInMonth){
+        if(account == null){
+            System.out.println("User with specific details is not registered on the system.");
+            return;
+        }
+        if(loanAmount < 1000){
+            System.out.println("Loan Amount should be more than $1000!");
+            return;
+        }
+        if(interestRate < 0){
+            System.out.println("Interest rate can't be negative!");
+            return;
+        }
+        if(termInMonth <= 3){
+            System.out.println("Term should be at least 3months length!");
+            return;
+        }
+
+        double totalAmountDueInterest = loanAmount + (loanAmount * interestRate);
+        double monthlyPayment = totalAmountDueInterest / termInMonth;
+
+        account.balance += loanAmount;
+
+        LocalDateTime oneMonthLater = currentDate.plusDays(30);
+        long daysTillNextPayment = ChronoUnit.DAYS.between(currentDate, oneMonthLater);
+
+        System.out.printf("You have loaned $%.2f and total amount based on interest that you will pay back is $%.2f", loanAmount, totalAmountDueInterest);
+        System.out.printf("\nYou are calculated to pay the amount back in %d months and your monthly payment will be equal to $%.2f", termInMonth, monthlyPayment);
+        System.out.printf("\nNext payment is awaiting to be paid after %d days, on this date - %s", daysTillNextPayment, oneMonthLater.format(formattedDate));
+
+        System.out.println("\nYour balance after loan amount added: $" + account.balance);
+
+    }
 }
