@@ -25,8 +25,8 @@ public class UserService {
     }
 
     public double getLoanInformation(AccountService accountService){
-        System.out.printf("\nTotal Loan Amount: $%.2f, Monthly Payment: $%.2f", accountService.totalAmountDueInterest, accountService.monthlyPayment);
-        return accountService.totalAmountDueInterest + accountService.monthlyPayment;
+        System.out.printf("\nTotal Loan Amount: $%.2f, Monthly Payment: $%.2f, Months left: %d", accountService.totalAmountDueInterest, accountService.monthlyPayment, accountService.monthLeft);
+        return accountService.totalAmountDueInterest + accountService.monthlyPayment + accountService.monthLeft;
     }
 
 }

@@ -18,6 +18,7 @@ public class AccountService {
 
     public double totalAmountDueInterest;
     public double monthlyPayment;
+    public int monthLeft;
 
     public AccountService() {
     }
@@ -133,6 +134,7 @@ public class AccountService {
 
         totalAmountDueInterest = loanAmount + (loanAmount * interestRate);
         monthlyPayment = totalAmountDueInterest / termInMonth;
+        monthLeft = termInMonth;
 
         account.balance += loanAmount;
         account.accountHistories.add(new AccountHistory("Loan, ", loanAmount, account.balance));

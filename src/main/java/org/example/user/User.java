@@ -10,6 +10,7 @@ public class User {
     public AccountService accountService = new AccountService();
     public double totalLoanAmountDueInterest = accountService.totalAmountDueInterest;
     public double monthlyPayment = accountService.monthlyPayment;
+    public int monthLeft = accountService.monthLeft;
 
 
     public User(){}
