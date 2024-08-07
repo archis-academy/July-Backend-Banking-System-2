@@ -10,7 +10,11 @@ import java.time.temporal.ChronoUnit;
 public class AccountService {
     private LocalDateTime currentDate = LocalDateTime.now();
     private DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-  
+    private double interestRate = 0.25;
+
+    public double totalAmountDueInterest;
+    public double monthlyPayment;
+
     public AccountService() {
     }
 
@@ -18,11 +22,11 @@ public class AccountService {
         if (amount > 0) {
             account.balance += amount;
             System.out.println("$" + amount + " is deposited to your account.");
-        }
-        else{
+        } else {
             System.out.println("Invalid amount of deposit!");
         }
     }
+
     public void withDraw(Account account, double amount) {
         if (account.balance >= amount) {
             account.balance -= amount;
@@ -38,7 +42,7 @@ public class AccountService {
             System.out.println(history);
         }
     }
-  
+
     public void transferMoney(Account accountSender, Account accountTaker, double amount, UserService userService) {
         boolean senderRegistered = false;
         boolean takerRegistered = false;
@@ -71,26 +75,26 @@ public class AccountService {
         }
     }
 
-    public void manageLoan(Account account, double loanAmount, double interestRate, int termInMonth){
-        if(account == null){
+    public void manageLoan(Account account, double loanAmount, int termInMonth) {
+        if (account == null) {
             System.out.println("User with specific details is not registered on the system.");
             return;
         }
-        if(loanAmount < 1000){
+        if (loanAmount < 1000) {
             System.out.println("Loan Amount should be more than $1000!");
             return;
         }
-        if(interestRate < 0){
+        if (interestRate < 0) {
             System.out.println("Interest rate can't be negative!");
             return;
         }
-        if(termInMonth <= 3){
+        if (termInMonth <= 3) {
             System.out.println("Term should be at least 3months length!");
             return;
         }
 
-        double totalAmountDueInterest = loanAmount + (loanAmount * interestRate);
-        double monthlyPayment = totalAmountDueInterest / termInMonth;
+        totalAmountDueInterest = loanAmount + (loanAmount * interestRate);
+        monthlyPayment = totalAmountDueInterest / termInMonth;
 
         account.balance += loanAmount;
         account.accountHistories.add(new AccountHistory("Loan, ", loanAmount, account.balance));
