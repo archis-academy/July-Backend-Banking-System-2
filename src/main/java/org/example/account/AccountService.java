@@ -4,25 +4,23 @@ import org.example.user.User;
 import org.example.user.UserService;
 
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class AccountService {
-    private LocalDateTime currentDate = LocalDateTime.now();
-    private DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-  
-    public AccountService() {
-    }
+    public SavingsAccount savingsAccount = new SavingsAccount();
+    public CheckingsAccount checkingsAccount = new CheckingsAccount();
 
     public void depositMoney(Account account, double amount) {
         if (amount > 0) {
             account.balance += amount;
             System.out.println("$" + amount + " is deposited to your account.");
-        }
-        else{
-            System.out.println("Invalid amount of deposit!");
+        } else {
+            System.out.println("Invalid fund to deposit!");
         }
     }
+
     public void withDraw(Account account, double amount) {
         if (account.balance >= amount) {
             account.balance -= amount;
@@ -33,12 +31,12 @@ public class AccountService {
     }
 
     public void getTransactionHistory(Account account) {
-        System.out.println("\nTransaction History for " + account.user.name);
+        System.out.println("Transaction History for " + account.user);
         for (AccountHistory history : account.accountHistories) {
             System.out.println(history);
         }
     }
-  
+
     public void transferMoney(Account accountSender, Account accountTaker, double amount, UserService userService) {
         boolean senderRegistered = false;
         boolean takerRegistered = false;
@@ -71,6 +69,39 @@ public class AccountService {
         }
     }
 
+    public void writeCheckForCheckings(CheckingsAccount checkingsAccount, double amount) {
+        withDraw(checkingsAccount, amount);
+        System.out.println("Check written for $" + amount + " is withdrawn from account.");
+        System.out.println(checkingsAccount.balance);
+    }
+
+    public void payBillfromCheckings(CheckingsAccount checkingsAccount, double amount, String biller) {
+        withDraw(checkingsAccount, amount);
+        System.out.println("$" + amount + " paid to the " + biller);
+
+    }
+
+    public void withDrawFromSavings(SavingsAccount savingsAccount,double amount) {
+        if (savingsAccount.withdrawals < 6) {
+            withDraw(savingsAccount, amount);
+            System.out.println("Withdrawal of $" + amount + " is made on " + LocalDateTime.now().format(savingsAccount.formattedDate));
+            savingsAccount.withdrawals++;
+        } else {
+            YearMonth monthOfYear = YearMonth.from(savingsAccount.currentDate);
+            int lengthOfMonth = monthOfYear.lengthOfMonth();
+            int daysTillEndOfMonth = lengthOfMonth - savingsAccount.currentDate.getDayOfMonth();
+            daysTillEndOfMonth++;
+            LocalDateTime nextWithdrawalDate = savingsAccount.currentDate.plusDays(daysTillEndOfMonth);
+
+            System.out.printf("Withdrawal limits reached for this month. \nYou can withdraw starting from this date: %s\n", nextWithdrawalDate.format(savingsAccount.formattedDateDMY) );
+        }
+    }
+
+    public void addInterestToSavings() {
+        savingsAccount.balance += savingsAccount.balance * savingsAccount.interestRate;
+        System.out.println("Balance after addition of interest: $" + savingsAccount.balance);
+    }
+  
     public void manageLoan(Account account, double loanAmount, double interestRate, int termInMonth){
         if(account == null){
             System.out.println("User with specific details is not registered on the system.");
