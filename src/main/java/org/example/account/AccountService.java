@@ -5,6 +5,8 @@ import org.example.user.UserService;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountService {
     public SavingsAccount savingsAccount = new SavingsAccount();
@@ -98,6 +100,10 @@ public class AccountService {
     public void addInterestToSavings() {
         savingsAccount.balance += savingsAccount.balance * savingsAccount.interestRate;
         System.out.println("Balance after addition of interest: $" + savingsAccount.balance);
+    }
+    public List<Account> listAllAccounts() {
+        List<Account> accounts = new ArrayList<>();
+        return new ArrayList<>(accounts); 
     }
 
 }
