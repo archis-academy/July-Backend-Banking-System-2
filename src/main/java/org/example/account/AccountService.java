@@ -5,6 +5,8 @@ import org.example.user.UserService;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountService {
     public SavingsAccount savingsAccount = new SavingsAccount();
@@ -100,4 +102,17 @@ public class AccountService {
         System.out.println("Balance after addition of interest: $" + savingsAccount.balance);
     }
 
-}
+    public String checkBalance(String accountNumber) {
+        public List<Account> accounts = new ArrayList<>();
+
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber)) {
+                return "Account balance: " + account.getBalance();
+            }
+        }
+        return "Account not found.";
+    }
+
+    }
+
+
