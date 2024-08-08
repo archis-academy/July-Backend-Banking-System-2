@@ -4,28 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserService {
-    private List<User> accountNumbers;
+    private int userID = 1;
+    private List<User> accounts;
 
     public UserService() {
-        this.accountNumbers = new ArrayList<>();
-    }
-
-    public int generateUniqueAccountNumber(){
-        return accountNumbers.size() + 1;
+        this.accounts = new ArrayList<>();
     }
 
     public void createNewUser(String name, String idNumber) {
-        int newAccountNumber = generateUniqueAccountNumber();
+        int newAccountNumber = userID;
         User newUser = new User(name,idNumber, newAccountNumber);
-        accountNumbers.add(newUser);
-    }
-
-    public void addUserManually(User user){
-        accountNumbers.add(user);
+        userID++;
+        accounts.add(newUser);
     }
 
     public List<User> getUsers(){
-        return accountNumbers;
+        return accounts;
     }
 
 }
