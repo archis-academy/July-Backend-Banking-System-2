@@ -27,5 +27,9 @@ public class Account {
         this.cardExpirationDate = cardExpirationDate;
         this.cvv = cvv;
         this.accountHistories = new ArrayList<>();
+ 
+    }
+    public String getAccountNumber() {
+        return accountNumber;
     }
 }

@@ -5,10 +5,15 @@ import org.example.user.UserService;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountService {
     public SavingsAccount savingsAccount = new SavingsAccount();
     public CheckingsAccount checkingsAccount = new CheckingsAccount();
+
+    public List<Account> accounts = new ArrayList<>();
+
 
     public void depositMoney(Account account, double amount) {
         if (amount > 0) {
@@ -99,5 +104,28 @@ public class AccountService {
         savingsAccount.balance += savingsAccount.balance * savingsAccount.interestRate;
         System.out.println("Balance after addition of interest: $" + savingsAccount.balance);
     }
+
+    public boolean deleteAccount(String accountNumber) {
+   
+      
+        List<Account> updatedAccounts = new ArrayList<>();
+        boolean accountFound = false;
+
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber)) {
+                accountFound = true; 
+            } else {
+                updatedAccounts.add(account);
+            }
+        }
+
+        if (accountFound) {
+            accounts = updatedAccounts;
+            return true; 
+        } else {
+            return false; 
+        }
+    }
+    
 
 }
