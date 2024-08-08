@@ -5,10 +5,12 @@ import org.example.user.UserService;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.util.Scanner;
 
 public class AccountService {
     public SavingsAccount savingsAccount = new SavingsAccount();
     public CheckingsAccount checkingsAccount = new CheckingsAccount();
+    Scanner scanner=new Scanner(System.in);
 
     public void depositMoney(Account account, double amount) {
         if (amount > 0) {
@@ -98,6 +100,22 @@ public class AccountService {
     public void addInterestToSavings() {
         savingsAccount.balance += savingsAccount.balance * savingsAccount.interestRate;
         System.out.println("Balance after addition of interest: $" + savingsAccount.balance);
+    }
+    public boolean comfirmDeleting(String accountNumber){
+
+        System.out.print("Are you sure you want to delete account " + accountNumber + "? (yes/no): ");
+        String confirmation = scanner.nextLine().trim().toLowerCase();
+
+        if (confirmation.equals("yes")) {
+            return true; 
+        } else if (confirmation.equals("no")) {
+            System.out.println("Account deletion cancelled.");
+            return false; 
+        } else {
+            System.out.println("Invalid input. Please enter 'yes' or 'no'.");
+            return comfirmDeleting(accountNumber);
+        }
+      
     }
 
 }
