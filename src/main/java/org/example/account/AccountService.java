@@ -62,6 +62,7 @@ public class AccountService {
                 accountTaker.accountHistories.add(new AccountHistory("Deposit, ", amount, accountTaker.balance));
 
                 System.out.println(accountTaker.user.name + ", you have been transferred $" + amount + " from " + accountSender.user.name);
+                System.out.println("Your balance after transaction: $" + accountTaker.balance);
             } else {
                 System.out.println("Insufficient balance to transfer!");
             }
