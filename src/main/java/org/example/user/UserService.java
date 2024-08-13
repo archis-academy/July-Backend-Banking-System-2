@@ -1,10 +1,12 @@
 package org.example.user;
 
+import org.example.account.AccountService;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserService {
-    private int userID = 1;
+    public int userID = 1;
     private List<User> accounts;
 
     public UserService() {
@@ -23,7 +25,7 @@ public class UserService {
         return accounts;
     }
 
-    public void inputValidationOnAccountCreation(User user){
+  public void inputValidationOnAccountCreation(User user){
         if(user.name == null){
             System.out.println("Please provide your name for further account creation process");
             return;
@@ -34,6 +36,11 @@ public class UserService {
         }
 
         System.out.println(user.name + ", your account has been succesfully created.");
+    }
+  
+   public double getLoanInformation(AccountService accountService){
+        System.out.printf("\nTotal Loan Amount: $%.2f, Monthly Payment: $%.2f, Months left: %d", accountService.totalAmountDueInterest, accountService.monthlyPayment, accountService.monthLeft);
+        return accountService.totalAmountDueInterest + accountService.monthlyPayment + accountService.monthLeft;
     }
 
 }

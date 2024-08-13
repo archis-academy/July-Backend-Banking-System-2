@@ -4,23 +4,33 @@ import org.example.user.User;
 import org.example.user.UserService;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class AccountService {
-    public LocalDateTime currentDate = LocalDateTime.now();
-    public DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+    private LocalDateTime currentDate = LocalDateTime.now();
     public SavingsAccount savingsAccount = new SavingsAccount();
     public CheckingsAccount checkingsAccount = new CheckingsAccount();
+
+    private DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private double interestRate = 0.25;
+
+    public double totalAmountDueInterest;
+    public double monthlyPayment;
+    public int monthLeft;
+
+    public AccountService() {
+    }
 
     public void depositMoney(Account account, double amount) {
         if (amount > 0) {
             account.balance += amount;
             System.out.println("$" + amount + " is deposited to your account.");
         } else {
-            System.out.println("Invalid fund to deposit!");
+            System.out.println("Invalid amount of deposit!");
         }
     }
 
@@ -34,7 +44,7 @@ public class AccountService {
     }
 
     public void getTransactionHistory(Account account) {
-        System.out.println("Transaction History for " + account.user);
+        System.out.println("\nTransaction History for " + account.user.name);
         for (AccountHistory history : account.accountHistories) {
             System.out.println(history);
         }
@@ -142,4 +152,38 @@ public class AccountService {
     }
   
 
+
+    public void manageLoan(Account account, double loanAmount, int termInMonth) {
+        if (account == null) {
+            System.out.println("User with specific details is not registered on the system.");
+            return;
+        }
+        if (loanAmount < 1000) {
+            System.out.println("Loan Amount should be more than $1000!");
+            return;
+        }
+        if (interestRate < 0) {
+            System.out.println("Interest rate can't be negative!");
+            return;
+        }
+        if (termInMonth <= 3) {
+            System.out.println("Term should be at least 3months length!");
+            return;
+        }
+
+        totalAmountDueInterest = loanAmount + (loanAmount * interestRate);
+        monthlyPayment = totalAmountDueInterest / termInMonth;
+        monthLeft = termInMonth;
+
+        account.balance += loanAmount;
+        account.accountHistories.add(new AccountHistory("Loan, ", loanAmount, account.balance));
+
+        LocalDateTime oneMonthLater = currentDate.plusDays(30);
+        long daysTillNextPayment = ChronoUnit.DAYS.between(currentDate, oneMonthLater);
+
+        System.out.printf("You have loaned $%.2f and total amount based on interest that you will pay back is $%.2f", loanAmount, totalAmountDueInterest);
+        System.out.println("\nYour balance after loan amount added: $" + account.balance);
+        System.out.printf("\nYou are calculated to pay the amount back in %d months and your monthly payment will be equal to $%.2f", termInMonth, monthlyPayment);
+        System.out.printf("\nNext payment is awaiting to be paid after %d days, on this date - %s\n", daysTillNextPayment, oneMonthLater.format(formattedDate));
+    }
 }
