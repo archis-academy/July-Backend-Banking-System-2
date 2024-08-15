@@ -25,4 +25,14 @@ public class Account {
         this.cvv = cvv;
         this.accountHistories = new ArrayList<>();
     }
+
+    public String getAccountNumber() {
+
+        return accountNumber;
+    }
+
+    public double getBalance() {
+    
+        return balance;
+    }
 }
