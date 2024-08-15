@@ -1,16 +1,20 @@
 package org.example.user;
 
+import org.example.account.Account;
 import org.example.account.AccountService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class UserService {
     public int userID = 1;
-    private List<User> accounts;
+    private List<User> users;
+    public Random random = new Random();
+    public List<Account> accounts = new ArrayList<>();
 
     public UserService() {
-        this.accounts = new ArrayList<>();
+        this.users = new ArrayList<>();
     }
 
     public void createNewUser(String name, String idNumber) {
@@ -18,11 +22,11 @@ public class UserService {
         User newUser = new User(name,idNumber, newAccountNumber);
         inputValidationOnAccountCreation(newUser);
         userID++;
-        accounts.add(newUser);
+        users.add(newUser);
     }
 
     public List<User> getUsers(){
-        return accounts;
+        return users;
     }
 
   public void inputValidationOnAccountCreation(User user){
@@ -43,4 +47,21 @@ public class UserService {
         return accountService.totalAmountDueInterest + accountService.monthlyPayment + accountService.monthLeft;
     }
 
+       private String generateUniqueAccountNumber() {
+        String accountNumber;
+        boolean unique;
+
+        do {
+            accountNumber = String.format("%06d", 100000 + random.nextInt(900000)); 
+            unique = true;
+            for (Account account : accounts) {
+                if (account.getAccountNumber().equals(accountNumber)) {
+                    unique = false; 
+                    break;
+                }
+            }
+        } while (!unique);
+
+        return accountNumber;
+    }
 }
