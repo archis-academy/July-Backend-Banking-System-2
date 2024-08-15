@@ -1,10 +1,11 @@
 package org.example.account;
 import org.example.user.User;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Account {
+public class Account implements Serializable{
     public User user;
     public String accountNumber;
     public double balance;
