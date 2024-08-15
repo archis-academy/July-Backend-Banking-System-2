@@ -26,21 +26,31 @@ public class AccountService {
     }
 
     public void depositMoney(Account account, double amount) {
-        if (amount > 0) {
+        if (validateAmount(amount)) {
             account.balance += amount;
-            System.out.println("$" + amount + " is deposited to your account.");
+            account.accountHistories.add(new AccountHistory("Deposit", amount, account.balance));
+            System.out.println("$" + amount + " deposited to your account.");
         } else {
-            System.out.println("Invalid amount of deposit!");
+            System.out.println("Invalid deposit amount! Must be positive.");
         }
     }
 
     public void withDraw(Account account, double amount) {
-        if (account.balance >= amount) {
-            account.balance -= amount;
-            System.out.println("$" + amount + " is withdrawn from your account.");
+        if (validateAmount(amount)) {
+            if (account.balance >= amount) {
+                account.balance -= amount;
+                account.accountHistories.add(new AccountHistory("Withdrawal", amount, account.balance));
+                System.out.println("$" + amount + " withdrawn from your account.");
+            } else {
+                System.out.println("Insufficient funds!");
+            }
         } else {
-            System.out.println("Insufficient funds!");
+            System.out.println("Invalid withdrawal amount! Must be positive.");
         }
+    }
+
+    public boolean validateAmount(double amount) {
+        return amount > 0;
     }
 
     public void getTransactionHistory(Account account) {
