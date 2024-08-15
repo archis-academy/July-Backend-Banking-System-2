@@ -7,12 +7,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class AccountService {
+    private LocalDateTime currentDate = LocalDateTime.now();
     public SavingsAccount savingsAccount = new SavingsAccount();
     public CheckingsAccount checkingsAccount = new CheckingsAccount();
-    
-    private LocalDateTime currentDate = LocalDateTime.now();
+
     private DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private double interestRate = 0.25;
 
@@ -113,6 +115,42 @@ public class AccountService {
         savingsAccount.balance += savingsAccount.balance * savingsAccount.interestRate;
         System.out.println("Balance after addition of interest: $" + savingsAccount.balance);
     }
+  
+     public void calculateInterest(Account account) {
+        if (interestRate < 0) {
+            System.out.println("Interest rate should be more than 0");
+            return;
+        }
+        if (account == null) {
+            System.out.println("This account is not actively registered on the system.");
+            return;
+        }
+        if (account.balance < 0) {
+            System.out.println("Balance should be more than 0 for interest gaining operation.");
+            return;
+        }
+
+        LocalDateTime dayRequested = LocalDateTime.now();
+        LocalDateTime oneMonthLater = dayRequested.plusDays(30);
+        long daysTillConfirm = ChronoUnit.DAYS.between(dayRequested, oneMonthLater);
+
+        if (oneMonthLater.isAfter(currentDate)) {
+            double profitAmount = account.balance * interestRate;
+
+            account.balance += profitAmount;
+
+
+            if (currentDate.equals(oneMonthLater)) {
+                System.out.println("Payment is succesfully done.");
+                System.out.println("Balance after Profit: $" + account.balance);
+            } else {
+                System.out.printf("Your payment is requested on %s and will be actively posted on the system after %s days", dayRequested.format(formattedDate), daysTillConfirm);
+                System.out.println("$" + profitAmount + " will be added to your account after completion of successfully interest operation on this date - " + oneMonthLater.format(formattedDate));
+            }
+
+        }
+    }
+  
 
 
     public void manageLoan(Account account, double loanAmount, int termInMonth) {
