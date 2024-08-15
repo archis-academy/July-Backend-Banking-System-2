@@ -6,6 +6,8 @@ import org.example.user.UserService;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -21,6 +23,8 @@ public class AccountService {
     public double totalAmountDueInterest;
     public double monthlyPayment;
     public int monthLeft;
+
+    public List<Account> accounts = new ArrayList<>();
 
     public AccountService() {
     }
@@ -185,5 +189,16 @@ public class AccountService {
         System.out.println("\nYour balance after loan amount added: $" + account.balance);
         System.out.printf("\nYou are calculated to pay the amount back in %d months and your monthly payment will be equal to $%.2f", termInMonth, monthlyPayment);
         System.out.printf("\nNext payment is awaiting to be paid after %d days, on this date - %s\n", daysTillNextPayment, oneMonthLater.format(formattedDate));
+    }
+    public void displayAccountDetails(String accountNumber) {
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber)) {
+                System.out.println("Account Details:");
+                System.out.println("Account Number: " + account.getAccountNumber());
+                System.out.println("Balance: $" + account.getBalance());
+                return;
+            }
+        }
+        System.out.println("Account with number " + accountNumber + " not found.");
     }
 }
