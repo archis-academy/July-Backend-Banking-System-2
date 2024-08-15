@@ -8,6 +8,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.security.auth.login.AccountNotFoundException;
+
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -191,12 +194,13 @@ public class AccountService {
         System.out.printf("\nNext payment is awaiting to be paid after %d days, on this date - %s\n", daysTillNextPayment, oneMonthLater.format(formattedDate));
     }
 
-    public String checkBalance(String accountNumber) {
+    public String checkBalance(String accountNumber) throws AccountNotFoundException {
         for (Account account : accounts) {
             if (account.getAccountNumber().equals(accountNumber)) {
                 return "Account balance: " + account.getBalance();
             }
         }
-        return "Account not found.";
+       
+        throw new AccountNotFoundException("Account with number " + accountNumber + " not found.");
     }
 }
