@@ -25,4 +25,10 @@ public class Account {
         this.cvv = cvv;
         this.accountHistories = new ArrayList<>();
     }
+
+    public Object getAccountNumber() {
+    
+        return accountNumber;
+        
+    }
 }

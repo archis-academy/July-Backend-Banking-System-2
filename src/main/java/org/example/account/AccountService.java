@@ -6,7 +6,10 @@ import org.example.user.UserService;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+
 import java.time.YearMonth;
 
 public class AccountService {
@@ -20,7 +23,11 @@ public class AccountService {
     public double totalAmountDueInterest;
     public double monthlyPayment;
     public int monthLeft;
+
+    public List<Account> accounts = new ArrayList<>();
+
     public Scanner scanner;
+
 
     public AccountService() {
     }
@@ -187,6 +194,32 @@ public class AccountService {
         System.out.printf("\nNext payment is awaiting to be paid after %d days, on this date - %s\n", daysTillNextPayment, oneMonthLater.format(formattedDate));
     }
 
+
+     public boolean deleteAccount(String accountNumber) {
+   
+      
+        List<Account> updatedAccounts = new ArrayList<>();
+        boolean accountFound = false;
+
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber)) {
+                accountFound = true; 
+            } else {
+                updatedAccounts.add(account);
+            }
+        }
+
+        if (accountFound) {
+            accounts = updatedAccounts;
+            return true; 
+        } else {
+            return false; 
+        }
+    }
+    
+
+
+
     public boolean confirmDeleting(String accountNumber) {
       
         while (true) {
@@ -204,4 +237,5 @@ public class AccountService {
             }
         }
     }
+
 }
