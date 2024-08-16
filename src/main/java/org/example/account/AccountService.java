@@ -8,7 +8,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.security.auth.login.AccountNotFoundException;
+
 import java.util.Scanner;
+
 
 import java.time.YearMonth;
 
@@ -26,7 +30,9 @@ public class AccountService {
 
     public List<Account> accounts = new ArrayList<>();
 
+
     public Scanner scanner;
+
 
 
     public AccountService() {
@@ -195,6 +201,17 @@ public class AccountService {
     }
 
 
+    public String checkBalance(String accountNumber) throws AccountNotFoundException {
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber)) {
+                return "Account balance: " + account.getBalance();
+            }
+        }
+       
+        throw new AccountNotFoundException("Account with number " + accountNumber + " not found.");
+    }
+
+
      public boolean deleteAccount(String accountNumber) {
    
       
@@ -237,5 +254,6 @@ public class AccountService {
             }
         }
     }
+
 
 }

@@ -26,9 +26,15 @@ public class Account {
         this.accountHistories = new ArrayList<>();
     }
 
-    public Object getAccountNumber() {
-    
+
+    public String getAccountNumber() {
+
         return accountNumber;
-        
+    }
+
+    public double getBalance() {
+    
+        return balance;
+
     }
 }
