@@ -9,10 +9,16 @@ import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.security.auth.login.AccountNotFoundException;
+
+import java.util.Scanner;
+
+
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 public class AccountService {
     private LocalDateTime currentDate = LocalDateTime.now();
@@ -26,7 +32,14 @@ public class AccountService {
     public double monthlyPayment;
     public int monthLeft;
 
-    public List<Account> accounts;
+
+    public List<Account> accounts = new ArrayList<>();
+
+
+    public Scanner scanner;
+
+
+
 
     public AccountService() {
     }
@@ -217,4 +230,61 @@ public class AccountService {
             
         }
     }
+
+    public String checkBalance(String accountNumber) throws AccountNotFoundException {
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber)) {
+                return "Account balance: " + account.getBalance();
+            }
+        }
+       
+        throw new AccountNotFoundException("Account with number " + accountNumber + " not found.");
+    }
+
+
+     public boolean deleteAccount(String accountNumber) {
+   
+      
+        List<Account> updatedAccounts = new ArrayList<>();
+        boolean accountFound = false;
+
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber)) {
+                accountFound = true; 
+            } else {
+                updatedAccounts.add(account);
+            }
+        }
+
+        if (accountFound) {
+            accounts = updatedAccounts;
+            return true; 
+        } else {
+            return false; 
+        }
+    }
+    
+
+
+
+    public boolean confirmDeleting(String accountNumber) {
+      
+        while (true) {
+            System.out.print("Are you sure you want to delete account " + accountNumber + "? (true/false): ");
+            
+            boolean confirmation = scanner.nextBoolean();
+            
+            scanner.nextLine(); 
+
+            if (confirmation) {
+                return true;
+            } else {
+                System.out.println("Account deletion cancelled.");
+                return false;
+            }
+        }
+    }
+
+
+
 }
