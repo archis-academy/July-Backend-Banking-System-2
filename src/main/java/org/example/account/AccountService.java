@@ -3,14 +3,22 @@ package org.example.account;
 import org.example.user.User;
 import org.example.user.UserService;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.security.auth.login.AccountNotFoundException;
+import java.util.Scanner;
+
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
+
 
 public class AccountService {
     private LocalDateTime currentDate = LocalDateTime.now();
@@ -24,27 +32,45 @@ public class AccountService {
     public double monthlyPayment;
     public int monthLeft;
 
-    List<Account> accounts = new ArrayList<>();
+
+
+    public List<Account> accounts = new ArrayList<>();
+
+
+    public Scanner scanner;
+
+
+
 
     public AccountService() {
     }
 
     public void depositMoney(Account account, double amount) {
-        if (amount > 0) {
+        if (validateAmount(amount)) {
             account.balance += amount;
-            System.out.println("$" + amount + " is deposited to your account.");
+            account.accountHistories.add(new AccountHistory("Deposit", amount, account.balance));
+            System.out.println("$" + amount + " deposited to your account.");
         } else {
-            System.out.println("Invalid amount of deposit!");
+            System.out.println("Invalid deposit amount! Must be positive.");
         }
     }
 
     public void withDraw(Account account, double amount) {
-        if (account.balance >= amount) {
-            account.balance -= amount;
-            System.out.println("$" + amount + " is withdrawn from your account.");
+        if (validateAmount(amount)) {
+            if (account.balance >= amount) {
+                account.balance -= amount;
+                account.accountHistories.add(new AccountHistory("Withdrawal", amount, account.balance));
+                System.out.println("$" + amount + " withdrawn from your account.");
+            } else {
+                System.out.println("Insufficient funds!");
+            }
         } else {
-            System.out.println("Insufficient funds!");
+            System.out.println("Invalid withdrawal amount! Must be positive.");
         }
+    }
+
+    public boolean validateAmount(double amount) {
+        return amount > 0;
     }
 
     public void getTransactionHistory(Account account) {
@@ -190,8 +216,95 @@ public class AccountService {
         System.out.printf("\nYou are calculated to pay the amount back in %d months and your monthly payment will be equal to $%.2f", termInMonth, monthlyPayment);
         System.out.printf("\nNext payment is awaiting to be paid after %d days, on this date - %s\n", daysTillNextPayment, oneMonthLater.format(formattedDate));
     }
+
     public List<Account> listAllAccounts() {
       
         return accounts; 
     }
+
+
+    public void displayAccountDetails(String accountNumber) {
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber)) {
+                System.out.println("Account Details:");
+                System.out.println("Account Number: " + account.getAccountNumber());
+                System.out.println("Balance: $" + account.getBalance());
+                return;
+            }
+        }
+        System.out.println("Account with number " + accountNumber + " not found.");
+    }
+
+
+    public void saveAccountsToFile(String filename) {
+        if (filename == null || filename.isEmpty()) {
+            System.out.println("Invalid filename.");
+            return;
+        }
+        
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+            oos.writeObject(accounts);
+            System.out.println("Accounts have been successfully saved.");
+        } catch (IOException e) {
+            System.err.println("An error occurred while saving accounts: " + e.getMessage());
+            
+        }
+    }
+
+    public String checkBalance(String accountNumber) throws AccountNotFoundException {
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber)) {
+                return "Account balance: " + account.getBalance();
+            }
+        }
+       
+        throw new AccountNotFoundException("Account with number " + accountNumber + " not found.");
+    }
+
+
+     public boolean deleteAccount(String accountNumber) {
+   
+      
+        List<Account> updatedAccounts = new ArrayList<>();
+        boolean accountFound = false;
+
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber)) {
+                accountFound = true; 
+            } else {
+                updatedAccounts.add(account);
+            }
+        }
+
+        if (accountFound) {
+            accounts = updatedAccounts;
+            return true; 
+        } else {
+            return false; 
+        }
+    }
+    
+
+
+
+    public boolean confirmDeleting(String accountNumber) {
+      
+        while (true) {
+            System.out.print("Are you sure you want to delete account " + accountNumber + "? (true/false): ");
+            
+            boolean confirmation = scanner.nextBoolean();
+            
+            scanner.nextLine(); 
+
+            if (confirmation) {
+                return true;
+            } else {
+                System.out.println("Account deletion cancelled.");
+                return false;
+            }
+        }
+    }
+
+
+
 }
