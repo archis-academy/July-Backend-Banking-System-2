@@ -1,10 +1,11 @@
 package org.example.account;
 import org.example.user.User;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Account {
+public class Account implements Serializable{
     public User user;
     public String accountNumber;
     public double balance;
@@ -24,5 +25,17 @@ public class Account {
         this.cardExpirationDate = cardExpirationDate;
         this.cvv = cvv;
         this.accountHistories = new ArrayList<>();
+    }
+
+
+    public String getAccountNumber() {
+
+        return accountNumber;
+    }
+
+    public double getBalance() {
+    
+        return balance;
+
     }
 }
