@@ -3,9 +3,13 @@ package org.example.account;
 import org.example.user.User;
 import org.example.user.UserService;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +32,12 @@ public class AccountService {
     public double monthlyPayment;
     public int monthLeft;
 
+
     public List<Account> accounts = new ArrayList<>();
 
 
     public Scanner scanner;
+
 
 
 
@@ -210,6 +216,20 @@ public class AccountService {
         System.out.printf("\nNext payment is awaiting to be paid after %d days, on this date - %s\n", daysTillNextPayment, oneMonthLater.format(formattedDate));
     }
 
+    public void saveAccountsToFile(String filename) {
+        if (filename == null || filename.isEmpty()) {
+            System.out.println("Invalid filename.");
+            return;
+        }
+        
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+            oos.writeObject(accounts);
+            System.out.println("Accounts have been successfully saved.");
+        } catch (IOException e) {
+            System.err.println("An error occurred while saving accounts: " + e.getMessage());
+            
+        }
+    }
 
     public String checkBalance(String accountNumber) throws AccountNotFoundException {
         for (Account account : accounts) {
@@ -264,6 +284,7 @@ public class AccountService {
             }
         }
     }
+
 
 
 }
