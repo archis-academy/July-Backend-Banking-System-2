@@ -11,10 +11,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.security.auth.login.AccountNotFoundException;
 import java.util.Scanner;
+
 import java.time.YearMonth;
 
 
@@ -31,10 +33,12 @@ public class AccountService {
     public int monthLeft;
 
 
+
     public List<Account> accounts = new ArrayList<>();
 
 
     public Scanner scanner;
+
 
 
 
@@ -212,6 +216,12 @@ public class AccountService {
         System.out.printf("\nYou are calculated to pay the amount back in %d months and your monthly payment will be equal to $%.2f", termInMonth, monthlyPayment);
         System.out.printf("\nNext payment is awaiting to be paid after %d days, on this date - %s\n", daysTillNextPayment, oneMonthLater.format(formattedDate));
     }
+
+    public List<Account> listAllAccounts() {
+      
+        return accounts; 
+    }
+
 
     public void displayAccountDetails(String accountNumber) {
         for (Account account : accounts) {
