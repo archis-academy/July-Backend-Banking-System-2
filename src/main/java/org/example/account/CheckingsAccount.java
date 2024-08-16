@@ -8,8 +8,8 @@ public class CheckingsAccount extends Account {
     public CheckingsAccount() {
     }
 
-    public CheckingsAccount(User user, String accountNumber, double balance, double overDraftLimit) {
-        super(user, accountNumber, balance);
+    public CheckingsAccount(User user, String accountNumber, double balance, double overDraftLimit, String cardNumber, String cardExpirationDate, int cvv) {
+        super(user, accountNumber, balance, cardNumber, cardExpirationDate, cvv);
         this.overDraftLimit = overDraftLimit;
     }
 }
