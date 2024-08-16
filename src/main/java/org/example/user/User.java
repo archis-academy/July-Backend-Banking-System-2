@@ -6,6 +6,8 @@ public class User {
     public String name;
     public String idNumber;
     public int accountNumber;
+    public String email;
+    public String identityNumber;
 
     public AccountService accountService = new AccountService();
     public double totalLoanAmountDueInterest = accountService.totalAmountDueInterest;

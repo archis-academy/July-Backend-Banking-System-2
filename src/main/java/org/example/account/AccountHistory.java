@@ -2,9 +2,11 @@ package org.example.account;
 
 
 public class AccountHistory {
-    private String transactionType;
-    private double amount;
-    private double balancePostTransaction;
+    public String transactionType;
+    public double amount;
+    public double balancePostTransaction;
+
+    public Account account;
 
 
     public AccountHistory(String transactionType, double amount, double balancePostTransaction){
