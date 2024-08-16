@@ -192,6 +192,6 @@ public class AccountService {
     }
     public List<Account> listAllAccounts() {
       
-        return new ArrayList<>(accounts); 
+        return accounts; 
     }
 }
