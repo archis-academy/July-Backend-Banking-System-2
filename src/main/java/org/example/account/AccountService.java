@@ -12,8 +12,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.security.auth.login.AccountNotFoundException;
 import java.util.Scanner;
 
@@ -22,19 +20,17 @@ import java.time.YearMonth;
 
 public class AccountService {
     public LocalDateTime currentDate = LocalDateTime.now();
-    public SavingsAccount savingsAccount = new SavingsAccount();
-    public CheckingsAccount checkingsAccount = new CheckingsAccount();
 
     public DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    public double interestRate = 0.25;
+    public double interestRate = 10.9;
 
-    public double totalAmountDueInterest;
+    public Scanner scanner;
+
+    public double totalLoanAmountDueInterest;
     public double monthlyPayment;
     public int monthLeft;
 
     public List<Account> accounts = new ArrayList<>();
-
-    public Scanner scanner;
 
     public AccountService() {
     }
@@ -42,7 +38,6 @@ public class AccountService {
     public void depositMoney(String accountNumber, double amount) {
         if (amount > 0) {
             Account account = findAccountByNumber(accountNumber);
-            
             if (account != null) {
                 account.balance += amount;
                 System.out.println("$" + amount + " is deposited to your account.");
@@ -57,7 +52,7 @@ public class AccountService {
     public void withDraw(String accountNumber, double amount) {
         if (amount > 0) {
             Account account = findAccountByNumber(accountNumber);
-            
+
             if (account != null) {
                 if (account.balance >= amount) {
                     account.balance -= amount;
@@ -79,7 +74,7 @@ public class AccountService {
 
     public void getTransactionHistory(String accountNumber) {
         Account account = findAccountByNumber(accountNumber);
-        
+
         if (account != null) {
             System.out.println("\nTransaction History for " + account.user.name);
             for (AccountHistory history : account.accountHistories) {
@@ -97,7 +92,7 @@ public class AccountService {
 
         boolean senderRegistered = false;
         boolean takerRegistered = false;
-    
+
         for (User user : userService.getUsers()) {
             if (user.idNumber.equals(accountSender.user.idNumber)) {
                 senderRegistered = true;
@@ -106,7 +101,7 @@ public class AccountService {
                 takerRegistered = true;
             }
         }
-    
+
         if (accountSender != null && accountTaker != null) {
             if (senderRegistered && takerRegistered) {
                 if (accountSender.balance >= amount) {
@@ -115,7 +110,7 @@ public class AccountService {
 
                     accountSender.accountHistories.add(new AccountHistory("Transfer", amount, accountSender.balance));
                     accountTaker.accountHistories.add(new AccountHistory("Deposit", amount, accountTaker.balance));
-    
+
                     System.out.println(accountTaker.user.name + ", you have been transferred $" + amount + " from " + accountSender.user.name);
                     System.out.println("Your balance after transaction: $" + accountTaker.balance);
                 } else {
@@ -135,10 +130,11 @@ public class AccountService {
             }
         }
     }
+
     public void writeCheckForCheckings(String accountNumber, double amount) {
         if (amount > 0) {
             CheckingsAccount checkingsAccount = (CheckingsAccount) findAccountByNumber(accountNumber);
-            
+
             if (checkingsAccount != null) {
                 withDraw(accountNumber, amount);
                 System.out.println("Check written for $" + amount + " is withdrawn from account.");
@@ -154,7 +150,7 @@ public class AccountService {
     public void payBillfromCheckings(String accountNumber, double amount, String biller) {
         if (amount > 0) {
             CheckingsAccount checkingsAccount = (CheckingsAccount) findAccountByNumber(accountNumber);
-            
+
             if (checkingsAccount != null) {
                 withDraw(accountNumber, amount);
                 System.out.println("$" + amount + " paid to the " + biller);
@@ -169,7 +165,7 @@ public class AccountService {
     public void withDrawFromSavings(String accountNumber, double amount) {
         if (amount > 0) {
             SavingsAccount savingsAccount = (SavingsAccount) findAccountByNumber(accountNumber);
-            
+
             if (savingsAccount != null) {
                 if (savingsAccount.withdrawals < 6) {
                     withDraw(accountNumber, amount);
@@ -181,7 +177,7 @@ public class AccountService {
                     int daysTillEndOfMonth = lengthOfMonth - savingsAccount.currentDate.getDayOfMonth();
                     daysTillEndOfMonth++;
                     LocalDateTime nextWithdrawalDate = savingsAccount.currentDate.plusDays(daysTillEndOfMonth);
-    
+
                     System.out.printf("Withdrawal limits reached for this month. \nYou can withdraw starting from this date: %s\n", nextWithdrawalDate.format(savingsAccount.formattedDateDMY));
                 }
             } else {
@@ -193,13 +189,14 @@ public class AccountService {
     }
 
     public void addInterestToSavings() {
+        SavingsAccount savingsAccount = new SavingsAccount();
         savingsAccount.balance += savingsAccount.balance * savingsAccount.interestRate;
         System.out.println("Balance after addition of interest: $" + savingsAccount.balance);
     }
-  
+
     public void calculateInterest(String accountNumber) {
         Account account = findAccountByNumber(accountNumber);
-    
+
         if (account == null) {
             System.out.println("This account is not actively registered on the system.");
             return;
@@ -212,29 +209,29 @@ public class AccountService {
             System.out.println("Balance should be more than 0 for interest gaining operation.");
             return;
         }
-    
+
         LocalDateTime dayRequested = LocalDateTime.now();
         LocalDateTime oneMonthLater = dayRequested.plusMonths(1);
         long daysTillConfirm = ChronoUnit.DAYS.between(dayRequested, oneMonthLater);
-    
-        double profitAmount = account.balance * (interestRate / 100); 
+
+        double profitAmount = account.balance * (interestRate / 100);
         account.balance += profitAmount;
-    
+
         if (dayRequested.isAfter(oneMonthLater.minusDays(1))) {
             System.out.println("Payment is successfully done.");
             System.out.println("Balance after Profit: $" + account.balance);
         } else {
-            System.out.printf("Your payment is requested on %s and will be actively posted on the system after %d days.%n", 
-                              dayRequested.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), daysTillConfirm);
-            System.out.printf("$%.2f will be added to your account after completion of the interest operation on this date - %s%n", 
-                              profitAmount, oneMonthLater.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            System.out.printf("Your payment is requested on %s and will be actively posted on the system after %d days.%n",
+                    dayRequested.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), daysTillConfirm);
+            System.out.printf("$%.2f will be added to your account after completion of the interest operation on this date - %s%n",
+                    profitAmount, oneMonthLater.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         }
     }
 
-    public void manageLoan(String accountNumber, double loanAmount, int termInMonth, double interestRate) {
+    public void manageLoan(String accountNumber, double loanAmount, int termInMonth) {
 
         Account account = findAccountByNumber(accountNumber);
-    
+
         if (account == null) {
             System.out.println("Account with number " + accountNumber + " is not registered on the system.");
             return;
@@ -251,7 +248,7 @@ public class AccountService {
             System.out.println("Term should be at least 3 months length!");
             return;
         }
-    
+
         double totalAmountDueInterest = loanAmount + (loanAmount * interestRate / 100);
         double monthlyPayment = totalAmountDueInterest / termInMonth;
         LocalDateTime currentDate = LocalDateTime.now();
@@ -260,15 +257,15 @@ public class AccountService {
 
         account.balance += loanAmount;
         account.accountHistories.add(new AccountHistory("Loan", loanAmount, account.balance));
-    
+
         System.out.printf("You have loaned $%.2f and total amount based on interest that you will pay back is $%.2f%n", loanAmount, totalAmountDueInterest);
         System.out.printf("Your balance after loan amount added: $%.2f%n", account.balance);
         System.out.printf("You are calculated to pay the amount back in %d months and your monthly payment will be equal to $%.2f%n", termInMonth, monthlyPayment);
         System.out.printf("Next payment is awaiting to be paid after %d days, on this date - %s%n", daysTillNextPayment, oneMonthLater.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
+
     public List<Account> listAllAccounts() {
-      
-        return accounts; 
+        return accounts;
     }
 
     public Account findAccountByNumber(String accountNumber) {
@@ -277,7 +274,7 @@ public class AccountService {
                 return account;
             }
         }
-        return null; 
+        return null;
     }
 
     public void displayAccountDetails(String accountNumber) {
@@ -297,13 +294,13 @@ public class AccountService {
             System.out.println("Invalid filename.");
             return;
         }
-        
+
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
             oos.writeObject(accounts);
             System.out.println("Accounts have been successfully saved.");
         } catch (IOException e) {
             System.err.println("An error occurred while saving accounts: " + e.getMessage());
-            
+
         }
     }
 
@@ -313,19 +310,19 @@ public class AccountService {
                 return "Account balance: " + account.getBalance();
             }
         }
-       
+
         throw new AccountNotFoundException("Account with number " + accountNumber + " not found.");
     }
 
 
     public boolean deleteAccount(String accountNumber) {
-      
+
         List<Account> updatedAccounts = new ArrayList<>();
         boolean accountFound = false;
 
         for (Account account : accounts) {
             if (account.getAccountNumber().equals(accountNumber)) {
-                accountFound = true; 
+                accountFound = true;
             } else {
                 updatedAccounts.add(account);
             }
@@ -333,20 +330,20 @@ public class AccountService {
 
         if (accountFound) {
             accounts = updatedAccounts;
-            return true; 
+            return true;
         } else {
-            return false; 
+            return false;
         }
     }
-    
+
     public boolean confirmDeleting(String accountNumber) {
-      
+
         while (true) {
             System.out.print("Are you sure you want to delete account " + accountNumber + "? (true/false): ");
-            
+
             boolean confirmation = scanner.nextBoolean();
-            
-            scanner.nextLine(); 
+
+            scanner.nextLine();
 
             if (confirmation) {
                 return true;
@@ -356,7 +353,6 @@ public class AccountService {
             }
         }
     }
-
 
 
 }

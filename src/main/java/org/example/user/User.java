@@ -7,20 +7,21 @@ public class User {
     public String idNumber;
     public int accountNumber;
     public String email;
-    public String identityNumber;
 
     public AccountService accountService = new AccountService();
-    public double totalLoanAmountDueInterest = accountService.totalAmountDueInterest;
+    public double totalLoanAmountDueInterest = accountService.totalLoanAmountDueInterest;
     public double monthlyPayment = accountService.monthlyPayment;
     public int monthLeft = accountService.monthLeft;
 
 
-    public User(){}
+    public User() {
+    }
 
-    public User(String name,String idNumber, int accountNumber) {
+    public User(String name, String idNumber, String email, int accountNumber) {
         this.name = name;
         this.idNumber = idNumber;
         this.accountNumber = accountNumber;
+        this.email = email;
     }
 
 }
